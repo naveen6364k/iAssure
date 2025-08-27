@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.iassure</groupId>
-	<artifactId>iassure-backend</artifactId>
+	<artifactId>iassure-incident-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>iassure-backend</name>
+	<name>iassure-incident-management</name>
 	<description>Incident Management System</description>
 	<url/>
 	<licenses>
