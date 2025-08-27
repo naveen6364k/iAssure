@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IassureBackendApplication {
+public class IassureIncidentManagementApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(IassureBackendApplication.class, args);
+        SpringApplication.run(IassureIncidentManagementApplication.class, args);
     }
 
 }
