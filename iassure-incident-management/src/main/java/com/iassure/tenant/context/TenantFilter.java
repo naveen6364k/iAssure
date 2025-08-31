@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,13 @@ public class TenantFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         String tenantId = httpRequest.getHeader(TENANT_HEADER);
+
+        if (tenantId == null || tenantId.isEmpty()) {
+            httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "X-Tenant-Id header is missing");
+            return;
+        }
 
         try {
             TenantContext.setCurrentTenant(tenantId);
