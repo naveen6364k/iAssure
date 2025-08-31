@@ -1,0 +1,50 @@
+name: Java CI with Maven and Flyway
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: iassure
+          POSTGRES_USER: iassure
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven
+      working-directory: ./iassure-incident-management
+      run: mvn -B package --file pom.xml
+
+    - name: Run Flyway Migrations
+      working-directory: ./iassure-incident-management
+      run: mvn flyway:migrate
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_NAME: iassure
+        DB_USER: iassure
+        DB_PASSWORD: password
